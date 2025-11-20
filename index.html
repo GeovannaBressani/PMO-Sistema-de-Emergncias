@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Emergências - Prefeitura de Ourinhos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 1.2rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-badge {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 0.8rem;
+            text-align: center;
+            line-height: 1.1;
+            padding: 5px;
+        }
+        
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .municipio {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .welcome-card {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto 2.5rem;
+            text-align: center;
+        }
+        
+        .welcome-card h1 {
+            color: #1e3c72;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .welcome-card p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 250px;
+            text-decoration: none;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-icon {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+        
+        .btn-report {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .btn-report:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(231, 76, 60, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(44, 62, 80, 0.25);
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-title {
+            color: #1e3c72;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .emergency-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+        
+        .level-option {
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .level-option.selected {
+            border-color: #e74c3c;
+            background: #ffeaea;
+        }
+        
+        .level-3 { border-left: 4px solid #e74c3c; }
+        .level-2 { border-left: 4px solid #f39c12; }
+        .level-1 { border-left: 4px solid #f1c40f; }
+        .level-0 { border-left: 4px solid #27ae60; }
+        
+        .level-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .level-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .service-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 0.5rem;
+        }
+        
+        .service-option {
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+        }
+        
+        .service-option.selected {
+            border-color: #1e3c72;
+            background: #e8f0ff;
+        }
+        
+        .service-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+        
+        .service-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .file-upload {
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #1e3c72;
+        }
+        
+        .file-upload.has-file {
+            border-color: #27ae60;
+            background: #e8f5e8;
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+        
+        .file-name {
+            font-size: 0.9rem;
+            color: #27ae60;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .required-text {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            margin-top: 0.5rem;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #27ae60 0%, #219653 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .btn-back:hover {
+            background: #5a6268;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+        
+        .login-info {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #2d5a27;
+        }
+        
+        .login-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .contact-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .emergency-contact {
+            background: #e74c3c;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .login-actions {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            color: #666;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-badge">PMO</div>
+                    <div>
+                        <div class="logo-text">Sistema de Emergências</div>
+                        <div class="municipio">Prefeitura Municipal de Ourinhos</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="home" class="screen active">
+        <div class="container">
+            <div class="main-content">
+                <div class="welcome-card">
+                    <h1>Relatos de Árvores e Emergências</h1>
+                    <p>Utilize este sistema para reportar árvores caídas ou com risco de queda em vias públicas. Sua colaboração ajuda a manter nossa cidade segura.</p>
+                </div>
+                
+                <div class="button-container">
+                    <button class="btn btn-report" onclick="showScreen('report')">
+                        <div class="btn-icon">📋</div>
+                        <div>Fazer Relato</div>
+                    </button>
+                    
+                    <button class="btn btn-login" onclick="showScreen('login')">
+                        <div class="btn-icon">👥</div>
+                        <div>Acesso Funcionários</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="report" class="screen">
+        <div class="container">
+            <div class="main-content">
+                <button class="btn-back" onclick="showScreen('home')">← Voltar para o Início</button>
+                <div class="form-container">
+                    <h2 class="form-title">Relatar Problema com Árvore</h2>
+                    <form id="reportForm">
+                        <div class="form-group">
+                            <label class="form-label">Localização</label>
+                            <select class="form-select" id="bairro" required>
+                                <option value="">Carregando bairros...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Problema</label>
+                            <select class="form-select" id="tipo_incidente" required>
+                                <option value="">Carregando tipos...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">CEP</label>
+                                <input type="text" class="form-input" id="cep" placeholder="00000-000" 
+                                       maxlength="9" oninput="formatarCEP(this)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Número</label>
+                                <input type="text" class="form-input" id="numero" placeholder="Número ou SN">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Rua/Avenida</label>
+                            <input type="text" class="form-input" id="rua" placeholder="Nome da rua" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Complemento</label>
+                            <input type="text" class="form-input" id="complemento" 
+                                   placeholder="Apartamento, bloco, etc.">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Ponto de Referência</label>
+                            <input type="text" class="form-input" id="referencia" placeholder="Ex: Próximo ao mercado, em frente à escola">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Nível de Emergência</label>
+                            <div class="emergency-levels">
+                                <div class="level-option level-3" data-level="3">
+                                    <div class="level-number">3</div>
+                                    <div class="level-desc">Urgente<br>(Pessoas em risco)</div>
+                                </div>
+                                <div class="level-option level-2" data-level="2">
+                                    <div class="level-number">2</div>
+                                    <div class="level-desc">Alta<br>(Atrapalha via)</div>
+                                </div>
+                                <div class="level-option level-1" data-level="1">
+                                    <div class="level-number">1</div>
+                                    <div class="level-desc">Média<br>(Área movimentada)</div>
+                                </div>
+                                <div class="level-option level-0" data-level="0">
+                                    <div class="level-number">0</div>
+                                    <div class="level-desc">Baixa<br>(Sem urgência)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Serviço Necessário</label>
+                            <div class="service-types">
+                                <div class="service-option" data-service="corte_arvore">
+                                    <div class="service-name">Corte</div>
+                                    <div class="service-desc">Supressão de Árvore</div>
+                                </div>
+                                <div class="service-option" data-service="poda">
+                                    <div class="service-name">Poda</div>
+                                    <div class="service-desc">Corte de Galhos</div>
+                                </div>
+                                <div class="service-option" data-service="recolher_galhos">
+                                    <div class="service-name">Recolher</div>
+                                    <div class="service-desc">Galhos no Chão</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Descrição do Problema</label>
+                            <textarea class="form-textarea" id="descricao" placeholder="Descreva brevemente a situação..." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Foto do Local</label>
+                            <div class="file-upload" id="fileUpload">
+                                <div class="file-upload-icon">📷</div>
+                                <div>Clique para adicionar foto</div>
+                                <div class="required-text">* Obrigatório - A foto é necessária para análise</div>
+                            </div>
+                            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                        </div>
+                        
+                        <div class="loading" id="formLoading">Enviando relato...</div>
+                        
+                        <button type="submit" class="btn-submit">Enviar Relato</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="login" class="screen">
+        <div class="container">
+            <div class="main-content">
+                <button class="btn-back" onclick="showScreen('home')">← Voltar para o Início</button>
+                <div class="login-container">
+                    <h2 class="form-title">Acesso ao Sistema</h2>
+                    <div class="login-info">
+                        Acesso para gerentes, motoristas e funcionários da prefeitura
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <input type="email" class="form-input" id="loginEmail" placeholder="seu.email@ourinhos.sp.gov.br" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Senha</label>
+                            <input type="password" class="form-input" id="loginSenha" placeholder="Sua senha" required>
+                        </div>
+                        
+                        <div class="login-actions">
+                            <button type="button" class="btn-back" onclick="showScreen('home')">Voltar</button>
+                            <button type="submit" class="btn-submit">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <p>Secretaria Municipal do Meio Ambiente</p>
+                    <p>Horário de atendimento: Segunda a Sexta, 8h às 17h</p>
+                </div>
+                <div class="emergency-contact">
+                    Emergências: 199 | Defesa Civil: 199 | Polícia Militar: 190 | Polícia Federal Rodoviária: 191 | Ambulância: 192 | Bombeiros: 193 | Polícia Civil: 197
+
+                </div>
+                <div class="contact-info">
+                    <p>© 2025 Prefeitura Municipal de Ourinhos - Todos os direitos reservados</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    let selectedFile = null;
+    let selectedLevel = null;
+    let selectedService = null;
+
+    // Função para mostrar/ocultar telas
+    function showScreen(screenId) {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById(screenId).classList.add('active');
+        
+        if (screenId === 'report') {
+            carregarDadosFormulario();
+        }
+    }
+
+    // Carregar dados dinâmicos do formulário
+    async function carregarDadosFormulario() {
+        try {
+            // Carregar bairros
+            const respostaBairros = await fetch('api/bairros/listar.php');
+            const bairros = await respostaBairros.json();
+            
+            const selectBairro = document.getElementById('bairro');
+            selectBairro.innerHTML = '<option value="">Selecione o bairro</option>';
+            
+            bairros.forEach(bairro => {
+                const option = document.createElement('option');
+                option.value = bairro.id;
+                option.textContent = bairro.nome;
+                selectBairro.appendChild(option);
+            });
+
+            // Carregar tipos de incidente
+            const respostaTipos = await fetch('api/tipos-incidente/listar.php');
+            const tipos = await respostaTipos.json();
+            
+            const selectTipo = document.getElementById('tipo_incidente');
+            selectTipo.innerHTML = '<option value="">Selecione o tipo</option>';
+            
+            tipos.forEach(tipo => {
+                const option = document.createElement('option');
+                option.value = tipo.id;
+                option.textContent = tipo.nome;
+                selectTipo.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+            alert('Erro ao carregar dados do formulário. Verifique se o servidor está rodando.');
+        }
+    }
+
+    // Formatar CEP
+    function formatarCEP(input) {
+        let cep = input.value.replace(/\D/g, '');
+        if (cep.length > 5) {
+            cep = cep.substring(0, 5) + '-' + cep.substring(5, 8);
+        }
+        input.value = cep;
+        
+        // Buscar endereço automaticamente quando CEP estiver completo
+        if (cep.length === 9) {
+            buscarEnderecoPorCEP(cep);
+        }
+    }
+
+    // Buscar endereço por CEP
+    async function buscarEnderecoPorCEP(cep) {
+        try {
+            const cepLimpo = cep.replace(/\D/g, '');
+            if (cepLimpo.length === 8) {
+                const resposta = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+                const endereco = await resposta.json();
+                
+                if (!endereco.erro) {
+                    document.getElementById('rua').value = endereco.logradouro || '';
+                    
+                    // Tentar encontrar bairro correspondente
+                    const selectBairro = document.getElementById('bairro');
+                    const bairroDigitado = endereco.bairro.toLowerCase();
+                    
+                    for (let option of selectBairro.options) {
+                        if (option.text.toLowerCase().includes(bairroDigitado)) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Erro ao buscar CEP:', error);
+        }
+    }
+
+    // Selecionar nível de emergência
+    function selectLevel(level) {
+        selectedLevel = level;
+        
+        document.querySelectorAll('.level-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        const selectedOption = document.querySelector(`.level-option[data-level="${level}"]`);
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+    }
+
+    // Selecionar tipo de serviço
+    function selectService(serviceType) {
+        selectedService = serviceType;
+        
+        document.querySelectorAll('.service-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        const selectedOption = document.querySelector(`.service-option[data-service="${serviceType}"]`);
+        if (selectedOption) {
+            selectedOption.classList.add('selected');
+        }
+    }
+
+    // Manipulação de arquivos
+    function handleFileSelect(input) {
+        if (input.files && input.files[0]) {
+            selectedFile = input.files[0];
+            const fileUpload = document.getElementById('fileUpload');
+            fileUpload.classList.add('has-file');
+            fileUpload.innerHTML = `
+                <div class="file-upload-icon">✅</div>
+                <div>Arquivo selecionado</div>
+                <div class="file-name">${selectedFile.name}</div>
+                <div class="required-text">* Obrigatório - A foto é necessária para análise</div>
+            `;
+        }
+    }
+
+    // Resetar formulário
+    function resetarFormulario() {
+        document.getElementById('reportForm').reset();
+        selectedLevel = null;
+        selectedService = null;
+        selectedFile = null;
+        
+        document.querySelectorAll('.level-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        document.querySelectorAll('.service-option').forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        document.getElementById('fileUpload').innerHTML = `
+            <div class="file-upload-icon">📷</div>
+            <div>Clique para adicionar foto</div>
+            <div class="required-text">* Obrigatório - A foto é necessária para análise</div>
+        `;
+        document.getElementById('fileUpload').classList.remove('has-file');
+    }
+
+    // ===== FUNÇÕES DE LOCALIZAÇÃO =====
+    
+    // Verificar e obter localização do usuário
+    async function obterLocalizacaoUsuario() {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) {
+                reject(new Error('Geolocalização não suportada pelo navegador'));
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        precisao: position.coords.accuracy
+                    });
+                },
+                (error) => {
+                    let mensagemErro;
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            mensagemErro = "Permissão de localização negada. Por favor, permita o acesso à localização.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            mensagemErro = "Localização indisponível.";
+                            break;
+                        case error.TIMEOUT:
+                            mensagemErro = "Tempo limite para obter localização.";
+                            break;
+                        default:
+                            mensagemErro = "Erro desconhecido ao obter localização.";
+                    }
+                    reject(new Error(mensagemErro));
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        });
+    }
+
+    // Validar se o usuário está próximo do local relatado
+    function validarProximidade(latUsuario, lonUsuario, latRelato, lonRelato) {
+        // Raio da Terra em metros
+        const R = 6371000;
+        
+        // Converter graus para radianos
+        const lat1 = latUsuario * Math.PI / 180;
+        const lat2 = latRelato * Math.PI / 180;
+        const deltaLat = (latRelato - latUsuario) * Math.PI / 180;
+        const deltaLon = (lonRelato - lonUsuario) * Math.PI / 180;
+
+        // Fórmula de Haversine
+        const a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
+                  Math.cos(lat1) * Math.cos(lat2) *
+                  Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const distancia = R * c;
+
+        return {
+            distancia: distancia,
+            estaProximo: distancia <= 500 // 500 metros de tolerância
+        };
+    }
+
+    // Buscar coordenadas do endereço (geocoding)
+    async function buscarCoordenadasEndereco(endereco, numero, bairro, cidade = "Ourinhos") {
+        try {
+            const enderecoCompleto = `${endereco}, ${numero}, ${bairro}, ${cidade}, SP`;
+            const resposta = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoCompleto)}&limit=1`
+            );
+            
+            const dados = await resposta.json();
+            
+            if (dados && dados.length > 0) {
+                return {
+                    latitude: parseFloat(dados[0].lat),
+                    longitude: parseFloat(dados[0].lon),
+                    confianca: 0.8 // Confiança média do geocoding
+                };
+            }
+            
+            throw new Error('Endereço não encontrado');
+        } catch (error) {
+            console.error('Erro no geocoding:', error);
+            return null;
+        }
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Níveis de emergência
+        document.querySelectorAll('.level-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const level = parseInt(this.getAttribute('data-level'));
+                selectLevel(level);
+            });
+        });
+
+        // Tipos de serviço
+        document.querySelectorAll('.service-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const serviceType = this.getAttribute('data-service');
+                selectService(serviceType);
+            });
+        });
+
+        // Upload de arquivo
+        document.getElementById('fileUpload').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function() {
+            handleFileSelect(this);
+        });
+
+        // CEP - buscar endereço quando perder foco
+        document.getElementById('cep').addEventListener('blur', function() {
+            buscarEnderecoPorCEP(this.value);
+        });
+    });
+
+    // Formulário de Relatos - VERSÃO COMPLETA COM LOCALIZAÇÃO
+    document.getElementById('reportForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Validações básicas
+        if (!selectedFile) {
+            alert('Por favor, selecione uma foto do local.');
+            return false;
+        }
+        
+        if (!selectedLevel) {
+            alert('Por favor, selecione o nível de emergência.');
+            return false;
+        }
+
+        if (!selectedService) {
+            alert('Por favor, selecione o tipo de serviço necessário.');
+            return false;
+        }
+
+        const bairroSelect = document.getElementById('bairro');
+        const tipoIncidenteSelect = document.getElementById('tipo_incidente');
+        const rua = document.getElementById('rua').value;
+        const numero = document.getElementById('numero').value;
+        
+        if (!bairroSelect.value) {
+            alert('Por favor, selecione um bairro.');
+            return false;
+        }
+        
+        if (!tipoIncidenteSelect.value) {
+            alert('Por favor, selecione o tipo de problema.');
+            return false;
+        }
+
+        if (!rua) {
+            alert('Por favor, informe a rua.');
+            return false;
+        }
+
+        // Mostrar loading
+        document.getElementById('formLoading').classList.add('active');
+
+        try {
+            // 1. OBTER LOCALIZAÇÃO DO USUÁRIO
+            let localizacaoUsuario;
+            try {
+                localizacaoUsuario = await obterLocalizacaoUsuario();
+                console.log('Localização do usuário:', localizacaoUsuario);
+            } catch (error) {
+                const continuar = confirm(
+                    `${error.message}\n\nDeseja continuar mesmo sem verificação de localização?`
+                );
+                if (!continuar) {
+                    document.getElementById('formLoading').classList.remove('active');
+                    return false;
+                }
+                localizacaoUsuario = null;
+            }
+
+            // 2. BUSCAR COORDENADAS DO ENDEREÇO INFORMADO
+            const bairroNome = bairroSelect.options[bairroSelect.selectedIndex].text;
+            const coordenadasEndereco = await buscarCoordenadasEndereco(rua, numero, bairroNome);
+            
+            let validacaoLocalizacao = {
+                aprovada: true,
+                motivo: "Localização verificada com sucesso",
+                distancia: null
+            };
+
+            // 3. VALIDAR PROXIMIDADE
+            if (localizacaoUsuario && coordenadasEndereco) {
+                const proximidade = validarProximidade(
+                    localizacaoUsuario.latitude,
+                    localizacaoUsuario.longitude,
+                    coordenadasEndereco.latitude,
+                    coordenadasEndereco.longitude
+                );
+                
+                if (!proximidade.estaProximo) {
+                    validacaoLocalizacao = {
+                        aprovada: false,
+                        motivo: `Você está a ${Math.round(proximidade.distancia)}m do local relatado. É necessário estar no local para fazer o relato.`,
+                        distancia: proximidade.distancia
+                    };
+                    
+                    const continuar = confirm(
+                        `${validacaoLocalizacao.motivo}\n\nDeseja continuar mesmo assim?`
+                    );
+                    
+                    if (!continuar) {
+                        document.getElementById('formLoading').classList.remove('active');
+                        return false;
+                    }
+                    
+                    validacaoLocalizacao.aprovada = true;
+                    validacaoLocalizacao.motivo = "Envio autorizado pelo usuário apesar da distância";
+                }
+            }
+
+            // 4. UPLOAD DA FOTO
+            const formDataFoto = new FormData();
+            formDataFoto.append('foto', selectedFile);
+            
+            // Adicionar dados de localização para análise (se disponível)
+            if (localizacaoUsuario) {
+                formDataFoto.append('latitude_usuario', localizacaoUsuario.latitude);
+                formDataFoto.append('longitude_usuario', localizacaoUsuario.longitude);
+            }
+            if (coordenadasEndereco) {
+                formDataFoto.append('latitude_endereco', coordenadasEndereco.latitude);
+                formDataFoto.append('longitude_endereco', coordenadasEndereco.longitude);
+            }
+            
+            const uploadResponse = await fetch('api/relatos/upload-foto.php', {
+                method: 'POST',
+                body: formDataFoto
+            });
+            
+            const uploadResult = await uploadResponse.json();
+            
+            if (!uploadResult.success) {
+                throw new Error(uploadResult.message || 'Erro ao enviar foto');
+            }
+
+            // 5. ENVIAR RELATO COMPLETO
+            const formData = {
+                bairro_id: bairroSelect.value,
+                tipo_incidente_id: tipoIncidenteSelect.value,
+                tipo_servico: selectedService,
+                endereco: rua,
+                numero: numero,
+                complemento: document.getElementById('complemento').value,
+                cep: document.getElementById('cep').value,
+                referencia: document.getElementById('referencia').value,
+                nivel_emergencia: selectedLevel,
+                descricao: document.getElementById('descricao').value,
+                foto_path: uploadResult.caminho,
+                prioridade: selectedLevel === 3 ? 'alta' : selectedLevel === 2 ? 'media' : 'baixa',
+                localizacao_usuario: localizacaoUsuario,
+                localizacao_endereco: coordenadasEndereco,
+                validacao_localizacao: validacaoLocalizacao
+            };
+
+            const response = await fetch('api/relatos/criar.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                let mensagem = `Relato enviado com sucesso! Protocolo: #${result.relato_id}`;
+                
+                if (validacaoLocalizacao.distancia && validacaoLocalizacao.distancia > 500) {
+                    mensagem += `\n\nAVISO: ${validacaoLocalizacao.motivo}`;
+                }
+                
+                alert(mensagem);
+                showScreen('home');
+                resetarFormulario();
+            } else {
+                throw new Error(result.message || 'Erro ao enviar relato');
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro: ' + error.message);
+        } finally {
+            document.getElementById('formLoading').classList.remove('active');
+        }
+        
+        return false;
+    });
+
+    // LOGIN
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email = document.getElementById('loginEmail').value;
+        const senha = document.getElementById('loginSenha').value;
+
+        if (!email || !senha) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        try {
+            console.log('Tentando login com:', email);
+            
+            const resposta = await fetch(`login.php`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ 
+                    email: email.trim(),
+                    senha: senha 
+                })
+            });
+
+            console.log('Status da resposta:', resposta.status);
+            
+            const data = await resposta.json();
+            console.log('Resposta do servidor:', data);
+
+            if (data.success) {
+                // Redirecionar baseado no tipo de usuário
+                switch(data.user.tipo) {
+                    case 'admin':
+                        window.location.href = "admindashboard.php";
+                        break;
+                    case 'motorista':
+                        window.location.href = "motoristadashboard.php";
+                        break;
+                    case 'funcionario':
+                        window.location.href = "funcionariodashboard.php";
+                        break;
+                    default:
+                        alert('Tipo de usuário não reconhecido');
+                }
+            } else {
+                alert('Erro no login: ' + data.message);
+            }
+        } catch (error) {
+            console.error("Erro detalhado no login:", error);
+            alert("Erro de conexão. Verifique se o servidor está rodando.");
+        }
+    });
+
+    // Testar conexão com API
+    async function testarConexaoAPI() {
+        try {
+            const resposta = await fetch(`login.php`);
+            const texto = await resposta.text();
+            console.log('Resposta da API:', texto);
+            return texto;
+        } catch (error) {
+            console.error('Erro ao testar API:', error);
+            return null;
+        }
+    }
+
+    // Inicialização
+    window.addEventListener('load', function() {
+        console.log('Página carregada. Testando conexão com API...');
+        testarConexaoAPI();
+    });
+</script>
+</body>
+</html>
