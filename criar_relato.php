@@ -24,19 +24,20 @@ try {
 // Processar envio do formulário
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bairro_id = $_POST['bairro_id'] ?? '';
-    $rua = $_POST['rua'] ?? '';
+    $endereco = $_POST['endereco'] ?? ''; // MUDANÇA: usar 'endereco' em vez de 'rua'
     $numero = $_POST['numero'] ?? '';
     $referencia = $_POST['referencia'] ?? '';
     $nivel_emergencia = $_POST['nivel_emergencia'] ?? '';
     $tipo_servico = $_POST['tipo_servico'] ?? '';
     $descricao = $_POST['descricao'] ?? '';
     $cep = $_POST['cep'] ?? '';
+    $complemento = $_POST['complemento'] ?? '';
     $latitude = $_POST['latitude'] ?? null;
     $longitude = $_POST['longitude'] ?? null;
     $localizacao_verificada = isset($_POST['localizacao_verificada']) ? 1 : 0;
 
     // Validar dados
-    if (empty($bairro_id) || empty($rua) || empty($nivel_emergencia) || empty($tipo_servico) || empty($descricao)) {
+    if (empty($bairro_id) || empty($endereco) || empty($nivel_emergencia) || empty($tipo_servico) || empty($descricao)) {
         $error = "Por favor, preencha todos os campos obrigatórios.";
     } else {
         try {
@@ -49,21 +50,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_bairro->execute([$bairro_id]);
             $bairro_nome = $stmt_bairro->fetchColumn();
 
-            // Gerar título automático
-            $titulo = "Relato - " . $bairro_nome . " - " . $tipo_servico;
+            // Determinar prioridade baseada no nível de emergência
+            $prioridade = 'baixa';
+            if ($nivel_emergencia == 3) {
+                $prioridade = 'alta';
+            } elseif ($nivel_emergencia == 2) {
+                $prioridade = 'media';
+            }
 
-            // Inserir relato
+            // CORREÇÃO: Inserir relato com a estrutura CORRETA da tabela
             $sql = "INSERT INTO relatos (
-                usuario_id, titulo, bairro, rua, numero, referencia, 
-                nivel_emergencia, tipo_servico, descricao, cep, 
-                latitude, longitude, localizacao_verificada, status
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')";
+                bairro, endereco, numero, referencia, 
+                nivel_emergencia, tipo_servico, descricao, cep, complemento,
+                latitude, longitude, localizacao_verificada, status, prioridade,
+                bairro_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente', ?, ?)";
             
             $stmt = $conn->prepare($sql);
             $stmt->execute([
-                $user_id, $titulo, $bairro_nome, $rua, $numero, $referencia,
-                $nivel_emergencia, $tipo_servico, $descricao, $cep,
-                $latitude, $longitude, $localizacao_verificada
+                $bairro_nome, $endereco, $numero, $referencia,
+                $nivel_emergencia, $tipo_servico, $descricao, $cep, $complemento,
+                $latitude, $longitude, $localizacao_verificada, $prioridade, $bairro_id
             ]);
 
             $relato_id = $conn->lastInsertId();
